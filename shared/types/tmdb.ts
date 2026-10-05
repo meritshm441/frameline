@@ -136,3 +136,24 @@ export type PosterSize = 'w92' | 'w154' | 'w185' | 'w342' | 'w500' | 'w780' | 'o
 export type BackdropSize = 'w300' | 'w780' | 'w1280' | 'original'
 export type ProfileSize = 'w45' | 'w185' | 'h632' | 'original'
 export type TmdbImageSize = PosterSize | BackdropSize | ProfileSize
+
+/** A film in someone's filmography (`/person/{id}/movie_credits`). */
+export interface PersonMovieCredit extends Movie {
+  credit_id: string
+  /** Set on acting credits. */
+  character?: string
+  /** Set on crew credits. */
+  job?: string
+  department?: string
+}
+
+export interface PersonMovieCredits {
+  cast: PersonMovieCredit[]
+  crew: PersonMovieCredit[]
+}
+
+/** Full person record from `/person/{id}` with appended movie credits. */
+export interface PersonDetails extends Person {
+  imdb_id: string | null
+  movie_credits: PersonMovieCredits
+}

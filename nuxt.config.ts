@@ -32,11 +32,7 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     // Server-only. Set via NUXT_TMDB_TOKEN.
-    tmdbToken: '',
-    public: {
-      // Public by design (Mapbox public tokens are URL-restricted). NUXT_PUBLIC_MAPBOX_TOKEN.
-      mapboxToken: ''
-    }
+    tmdbToken: ''
   },
 
   compatibilityDate: '2026-06-30',
