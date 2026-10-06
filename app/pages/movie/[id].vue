@@ -217,23 +217,26 @@ const showConstellation = useNearViewport(constellationAnchor)
       <!-- Where to watch -->
       <section
         aria-labelledby="watch-heading"
-        class="mx-auto mt-28 max-w-360 scroll-mt-24 px-5 sm:px-8 lg:px-12"
+        class="mx-auto mt-28 grid max-w-360 gap-8 px-5 sm:px-8 lg:grid-cols-12 lg:px-12"
       >
-        <div class="border-b border-(--fl-line) pb-6">
+        <div class="lg:col-span-4">
           <p class="eyebrow">
             Screenings
           </p>
           <h2
             id="watch-heading"
-            class="mt-3 scroll-mt-24 font-display text-4xl font-light sm:text-5xl"
+            class="mt-3 scroll-mt-24 font-display text-4xl font-light text-balance sm:text-5xl"
           >
             Where to watch it tonight
           </h2>
+          <p class="mt-4 max-w-sm text-sm text-(--fl-muted)">
+            Official services showing {{ movie.title }} where you are. Each logo opens the full list of offers.
+          </p>
         </div>
         <DossierWhereToWatch
           :movie-id="movie.id"
           :title="movie.title"
-          class="mt-8"
+          class="lg:col-span-8"
         />
       </section>
 
