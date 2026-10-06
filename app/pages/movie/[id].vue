@@ -157,6 +157,15 @@ const showConstellation = useNearViewport(constellationAnchor)
             >
               No official trailer on file
             </p>
+            <UButton
+              to="#watch-heading"
+              label="Where to watch"
+              icon="i-lucide-tv"
+              size="lg"
+              color="neutral"
+              variant="outline"
+            />
+            <JournalLogButton :movie="movie" />
           </div>
         </div>
       </header>
@@ -202,6 +211,29 @@ const showConstellation = useNearViewport(constellationAnchor)
         <DossierCaseFile
           :movie="movie"
           class="relative z-10 lg:col-span-4 lg:col-start-9 lg:-mt-32"
+        />
+      </section>
+
+      <!-- Where to watch -->
+      <section
+        aria-labelledby="watch-heading"
+        class="mx-auto mt-28 max-w-360 scroll-mt-24 px-5 sm:px-8 lg:px-12"
+      >
+        <div class="border-b border-(--fl-line) pb-6">
+          <p class="eyebrow">
+            Screenings
+          </p>
+          <h2
+            id="watch-heading"
+            class="mt-3 scroll-mt-24 font-display text-4xl font-light sm:text-5xl"
+          >
+            Where to watch it tonight
+          </h2>
+        </div>
+        <DossierWhereToWatch
+          :movie-id="movie.id"
+          :title="movie.title"
+          class="mt-8"
         />
       </section>
 

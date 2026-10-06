@@ -3,7 +3,24 @@ import { countryInSentence, countryName } from '#shared/utils/atlas'
 
 const { query, open, close, setSpan, films } = useAtlas()
 const { data, status, error, refresh } = films
-const { stamps, visited, stamp, loaded } = usePassport()
+const { stamps, visited, stamp, clear, loaded } = usePassport()
+
+// Clearing can't be undone, so it asks once, inline, before it happens.
+// Focus follows the swap between the trigger and the confirm buttons, so
+// keyboard users aren't dropped back at the top of the page.
+const confirmingClear = ref(false)
+const clearControls = useTemplateRef<HTMLDivElement>('clearControls')
+
+async function setConfirming(value: boolean) {
+  confirmingClear.value = value
+  await nextTick()
+  clearControls.value?.querySelector<HTMLButtonElement>(value ? '[data-keep]' : 'button')?.focus()
+}
+
+function clearPassport() {
+  clear()
+  confirmingClear.value = false
+}
 
 const country = computed(() => query.value.country)
 const name = computed(() => (country.value ? countryName(country.value) : null))
@@ -130,9 +147,47 @@ useSeoMeta({
             </template>
           </h2>
         </div>
-        <p class="max-w-sm text-sm text-(--fl-muted)">
-          Every country you open is stamped here, in this browser only. Select a stamp to return.
-        </p>
+        <div class="max-w-sm">
+          <p class="text-sm text-(--fl-muted)">
+            Every country you open is stamped here, in this browser only. Select a stamp to return.
+          </p>
+          <div
+            v-if="loaded && stamps.length"
+            ref="clearControls"
+            class="mt-4 flex flex-wrap items-center gap-3"
+          >
+            <UButton
+              v-if="!confirmingClear"
+              label="Clear passport"
+              icon="i-lucide-eraser"
+              size="sm"
+              color="neutral"
+              variant="ghost"
+              @click="setConfirming(true)"
+            />
+            <template v-else>
+              <span
+                class="text-sm text-(--fl-text)"
+                role="status"
+              >Remove all {{ stamps.length }} {{ stamps.length === 1 ? 'stamp' : 'stamps' }}?</span>
+              <UButton
+                label="Clear"
+                size="sm"
+                color="error"
+                variant="outline"
+                @click="clearPassport"
+              />
+              <UButton
+                label="Keep"
+                size="sm"
+                color="neutral"
+                variant="ghost"
+                data-keep
+                @click="setConfirming(false)"
+              />
+            </template>
+          </div>
+        </div>
       </div>
       <AtlasPassport
         :stamps="stamps"

@@ -49,7 +49,19 @@ export function usePassport() {
     writeStamps(stamps.value)
   }
 
+  /** Empty the passport. The country open now isn't re-stamped until it is opened again. */
+  function clear() {
+    if (!import.meta.client) return
+    loaded.value = true
+    stamps.value = []
+    try {
+      localStorage.removeItem(STORAGE_KEY)
+    } catch {
+      // Storage unavailable: the in-memory passport is still cleared.
+    }
+  }
+
   const visited = computed(() => new Set(stamps.value.map(s => s.code)))
 
-  return { stamps: readonly(stamps), visited, stamp, loaded: readonly(loaded) }
+  return { stamps: readonly(stamps), visited, stamp, clear, loaded: readonly(loaded) }
 }
