@@ -157,3 +157,28 @@ export interface PersonDetails extends Person {
   imdb_id: string | null
   movie_credits: PersonMovieCredits
 }
+
+/** A streaming service, shop or channel from `/movie/{id}/watch/providers`. */
+export interface WatchProvider {
+  provider_id: number
+  provider_name: string
+  logo_path: string | null
+  display_priority: number
+}
+
+/** One region's offers. TMDB gives a single `link` (its own watch page), not one per provider. */
+export interface WatchRegionOffers {
+  link: string
+  flatrate?: WatchProvider[]
+  free?: WatchProvider[]
+  ads?: WatchProvider[]
+  rent?: WatchProvider[]
+  buy?: WatchProvider[]
+}
+
+/** What `/api/movie/[id]/watch` returns: one region's offers plus every region that has any. */
+export interface WatchResponse {
+  region: string
+  regions: string[]
+  offers: WatchRegionOffers | null
+}
